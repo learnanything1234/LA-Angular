@@ -4,14 +4,14 @@
 
 export const environment = {
   production: false,
-   firebaseConfig:{
-    apiKey: "AIzaSyDD8XKLPWPZKKbwkCQwKD5zP5PMLfaeJks",
-    authDomain: "tech-junior-a591c.firebaseapp.com",
-    projectId: "tech-junior-a591c",
-    storageBucket: "tech-junior-a591c.appspot.com",
-    messagingSenderId: "178480083368",
-    appId: "1:178480083368:web:546711214787cbd1306d9d"
-  }
+  firebaseConfig: { 
+    apiKey: "AIzaSyCPFd0X5PQO-h9ie5nK0icVJ6vc_kFTLvo",
+  authDomain: "learnanything-187c4.firebaseapp.com",
+  projectId: "learnanything-187c4",
+  storageBucket: "learnanything-187c4.appspot.com",
+  messagingSenderId: "418520906644",
+  appId: "1:418520906644:web:ab4624e8c08c9fc1852d81"
+   }
 };
 
  

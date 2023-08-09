@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 import { Observable } from 'rxjs';
  
 import { AuthService } from 'src/app/shared/auth.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { environment } from 'src/environments/environment';
+ 
 
 @Component({
   selector: 'app-dashboard',
@@ -11,22 +14,28 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class DashboardComponent implements OnInit {
 
-  user$!: Observable<any>;
+ 
+  user_id: string;
+  email: string;
 
   constructor(private auth: AuthService,
-    private fireauth: AngularFireAuth
+ 
     
    ) { }
 
   ngOnInit(): void {
 
-   this.fireauth.authState.subscribe(
-      (res:any) => {
+   
         
-        this.user$ = this.auth.getUserById(res.uid);
-      } 
+    const app = initializeApp(environment.firebaseConfig);
+ 
+    const auth = getAuth(app);
 
-    );
+    this.email = auth.currentUser.email;
+    this.user_id = auth.currentUser.uid;
+     
+
+    
 
 
    

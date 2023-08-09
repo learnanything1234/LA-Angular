@@ -8,10 +8,9 @@
 
           <button class="btn btn-primary" style="float: right;" (click)="logout()">Logout</button>
 
-          <ng-container *ngIf="user$ | async as user; ">
 
-            <h1>Current user login Email is: {{user.email}}</h1>
-          </ng-container>
+          <h1>Current user login Email is: {{email}}</h1>
+
 
 
         </div>

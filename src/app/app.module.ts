@@ -1,4 +1,4 @@
-import { AngularFireModule } from '@angular/fire/compat';
+ 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
  
@@ -12,9 +12,17 @@ import { DashboardComponent } from './component/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './component/forgot-password/forgot-password.component';
 import { VarifyEmailComponent } from './component/varify-email/varify-email.component';
 import { FormsModule } from '@angular/forms';
-import { getFirestore, provideFirestore   } from '@angular/fire/firestore';
-import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+ 
+import { getFirestore, provideFirestore,  } from '@angular/fire/firestore';
+ 
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { AuthGuard } from './shared/auth.guard';
+import { AuthService } from './shared/auth.service';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+ 
+
  
 @NgModule({
   declarations: [
@@ -28,20 +36,20 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    RouterModule,
     FormsModule,
-    AngularFireModule,
-    AngularFirestoreModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
  
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+
+
   ],
-  providers: [{ provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }],
+
+  providers: [ AuthGuard,AuthService,
+    { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
+  ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }
-function provideAuth(arg0: () => import("@firebase/auth").Auth): any[] | import("@angular/core").Type<any> | import("@angular/core").ModuleWithProviders<{}> {
-  throw new Error('Function not implemented.');
-}
-
+ 

@@ -1,30 +1,45 @@
+import { environment } from './../../environments/environment';
  
  
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+ 
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { GoogleAuthProvider, Auth} from 'firebase/auth';
+ 
+import { GoogleAuthProvider, OAuthProvider, getAuth} from 'firebase/auth';
  
 import { Router } from '@angular/router';
 import { Observable, map, switchMap } from 'rxjs';
+import {Auth, createUserWithEmailAndPassword,
+  signInWithPopup,
+  sendPasswordResetEmail,
+  signOut,
+  sendEmailVerification,
+  signInWithEmailAndPassword}  from '@angular/fire/auth';
+import {
+  collection,
+  doc,
+  getFirestore,
+  getDoc,
+  Firestore,
  
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  // Add other properties as needed
-}
+  collectionData,
+ 
+  
+} from '@angular/fire/firestore';
+import { addDoc } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+ 
+ 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   userid:any ;
 
-  constructor(private fireauth : AngularFireAuth , private fs: AngularFirestore, private router : Router) { }
+  constructor( private fs:Firestore,private auth:Auth,   private router : Router) { }
 
   // login method
   login(email : string, password : string) {
-    this.fireauth.signInWithEmailAndPassword(email,password).then( (res:any) => {
+    signInWithEmailAndPassword(this.auth,email,password).then( (res:any) => {
         localStorage.setItem('token','true');
 
         if(res.user?.emailVerified == true) {
@@ -44,26 +59,39 @@ export class AuthService {
 
  
 
-  getUserById(userId: string): Observable<any> {
-    return this.fs.collection('/users').doc(userId).snapshotChanges().pipe(
-      map(snapshot => {
-        if (snapshot.payload.exists) {
-          const data = snapshot.payload.data() as UserData;
-         
-          return  { ...data };
-        } else {
-          return null;
-        }
-      })
-    );
-  }
+  // async  getUserById() {
+  //   const app = initializeApp(environment.firebaseConfig);
+  //   const db = getFirestore(app);
+  //   const auth = getAuth(app);
+  
+  //   try {
+  //     const user = auth.currentUser;
+  
+  //     if (user) {
+  //       const documentRef = doc(db, '/users', user.uid);
+  //       const docSnapshot = await getDoc(documentRef);
+  //                console.log( docSnapshot.data())
+  //       if (docSnapshot.exists()) {
+  //         const data = docSnapshot.data();
+  //         console.log('Document data:', data);
+  //       } else {
+  //         console.log('Document not found');
+  //       }
+  //     } else {
+  //       console.log('User not authenticated');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error getting document:', error);
+  //   }
+  // }
   // register method
   register(email : string, password : string) {
-    this.fireauth.createUserWithEmailAndPassword(email, password).then( (res:any) => {
+
+    createUserWithEmailAndPassword(this.auth,email, password).then( (res:any) => {
       alert('Registration Successful');
       this.sendEmailForVarification(res.user);
       
-         this.addUserInfoToCollection(res.user.uid, email);
+        //  this.addUserInfoToCollection(res.user.uid, email);
       this.router.navigate(['/login']);
     }, (err: { message: any; }) => {
       alert(err.message);
@@ -73,31 +101,21 @@ export class AuthService {
 
 
 
-    // Function to add user information to Firestore collection
-      addUserInfoToCollection(uid: string, email: string) {
-        debugger
-      const userRef = this.fs.collection('users').doc(uid);
- 
-      // You can add more user properties as needed
-      const userInfo = {
-        uid: uid,
-        email: email,
-        // Add other user information here
-      };
-  
-      // Set the user information in the Firestore document
-      userRef.set(userInfo)
-        .then(() => {
-          console.log('User information added to Firestore collection');
-        })
-        .catch((error: any) => {
-          console.error('Error adding user information:', error);
-        });
-    }
+    // // Function to add user information to Firestore collection
+    //   addUserInfoToCollection(uid: string, email: string) {
+
+    //     const userInfo = {
+    //     uid: uid,
+    //     email: email,
+    //   };
+
+    //      return addDoc(collection(this.fs,'users'),userInfo);
+       
+    // }
 
   // sign out
   logout() {
-    this.fireauth.signOut().then( () => {
+     signOut(this.auth).then( () => {
       localStorage.removeItem('token');
       this.router.navigate(['/login']);
     }, (err: { message: any; }) => {
@@ -107,7 +125,7 @@ export class AuthService {
 
   // forgot password
   forgotPassword(email : string) {
-      this.fireauth.sendPasswordResetEmail(email).then(() => {
+      sendPasswordResetEmail(this.auth,email).then(() => {
         this.router.navigate(['/varify-email']);
       }, (err: any) => {
         alert('Something went wrong');
@@ -117,7 +135,7 @@ export class AuthService {
   // email varification
   sendEmailForVarification(user : any) {
     console.log(user);
-    user.sendEmailVerification().then((res : any) => {
+     sendEmailVerification(user).then((res : any) => {
       this.router.navigate(['/varify-email']);
     }, (err : any) => {
       alert('Something went wrong. Not able to send mail to your email.')
@@ -126,11 +144,11 @@ export class AuthService {
 
   //sign in with google
   googleSignIn() {
-    return this.fireauth.signInWithPopup(new GoogleAuthProvider).then((res:any) => {
+    return  signInWithPopup(this.auth,  new GoogleAuthProvider).then((res:any) => {
 
       this.router.navigate(['/dashboard']);
       localStorage.setItem('token',JSON.stringify(res.user?.uid));
-      this.addUserInfoToCollection(res.user?.uid, res.user?.email);
+      // this.addUserInfoToCollection(res.user?.uid, res.user?.email);
 
     }, (err: { message: any; }) => {
       alert(err.message);
@@ -138,16 +156,18 @@ export class AuthService {
   }
   
   //login with microsoft 
-  // signInWithMicrosoft() {
-  //   const microsoftProvider = new firebase.default.auth.OAuthProvider('microsoft.com');
-  //   this.fireauth.signInWithPopup(microsoftProvider).then((result) => {
-  //     // Handle successful login
-  //     console.log(result);
-  //   }).catch((error) => {
-  //     // Handle error
-  //     console.error(error);
-  //   });
-  // }
+  signInWithMicrosoft() {
+    console.log("signing in with microsoft...")
+    const microsoftProvider = new  OAuthProvider('microsoft.com');
+      signInWithPopup(this.auth,microsoftProvider).then((result) => {
+      // Handle successful login
+      console.log(result);
+      this.router.navigate(['/dashboard']);
+    }).catch((error) => {
+      // Handle error
+      console.error(error);
+    });
+  }
 
 
 
