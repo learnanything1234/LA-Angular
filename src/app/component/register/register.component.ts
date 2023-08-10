@@ -8,31 +8,40 @@ import { AuthService } from 'src/app/shared/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  email : string = '';
-  password : string = '';
+  email: string = '';
+  password: string = '';
 
-  constructor(private auth : AuthService) { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
   }
 
   register() {
 
-    if(this.email == '') {
+    if (this.email == '') {
       alert('Please enter email');
       return;
     }
 
-    if(this.password == '') {
+    if (this.password == '') {
       alert('Please enter password');
       return;
     }
 
-    this.auth.register(this.email,this.password);
-    
+    this.auth.register(this.email, this.password);
+
     this.email = '';
     this.password = '';
 
+  }
+
+  signInWithGoogle() {
+    this.auth.googleSignIn();
+  }
+
+  signInwithMicrosoft() {
+
+    this.auth.signInWithMicrosoft();
   }
 
 }
