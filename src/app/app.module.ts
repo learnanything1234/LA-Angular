@@ -1,7 +1,7 @@
- 
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
- 
+
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,16 +14,17 @@ import { VarifyEmailComponent } from './component/varify-email/varify-email.comp
 import { FormsModule } from '@angular/forms';
 
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
- 
-import { getFirestore, provideFirestore,  } from '@angular/fire/firestore';
- 
+
+import { getFirestore, provideFirestore, } from '@angular/fire/firestore';
+
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { AuthGuard } from './shared/auth.guard';
 import { AuthService } from './shared/auth.service';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
- 
+import { HomeComponent } from './component/home/home.component';
 
- 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +33,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     DashboardComponent,
     ForgotPasswordComponent,
     VarifyEmailComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -40,16 +42,16 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
- 
+
 
 
   ],
 
-  providers: [ AuthGuard,AuthService,
+  providers: [AuthGuard, AuthService,
     { provide: FIREBASE_OPTIONS, useValue: environment.firebaseConfig }
   ],
 
   bootstrap: [AppComponent]
 })
 export class AppModule { }
- 
+

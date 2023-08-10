@@ -7,11 +7,11 @@ import { environment } from 'src/environments/environment';
 
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class HomeComponent implements OnInit {
 
 
   user_id: string;
@@ -25,11 +25,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
 
-
     const app = initializeApp(environment.firebaseConfig);
 
     const auth = getAuth(app);
-    console.log(auth)
+    console.log(auth.currentUser)
     this.email = auth.currentUser.email;
     this.user_id = auth.currentUser.uid;
 
