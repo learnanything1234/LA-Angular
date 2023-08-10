@@ -13,14 +13,6 @@
           "strict": true
         }
       },
-      "i18n": {
-        "sourceLocale": "en-US",
-        "locales": {
-          "fr": {
-            "translation": "src/locale/messages.fr.xlf"
-          }
-        }
-      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -31,13 +23,15 @@
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "localize": false,
-            "i18nMissingTranslation": "error",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
+            ],
+            "styles": [
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -70,11 +64,6 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
-            },
-            "fr": {
-              "localize": [
-                "fr"
-              ]
             }
           },
           "defaultConfiguration": "production"
@@ -87,9 +76,6 @@
             },
             "development": {
               "browserTarget": "AngularAuth:build:development"
-            },
-            "fr": {
-              "browserTarget": "AngularAuth:build:development,fr"
             }
           },
           "defaultConfiguration": "development"
@@ -97,9 +83,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AngularAuth:build",
-            "format": "xlf",
-            "outputPath": "src/locale"
+            "browserTarget": "AngularAuth:build"
           }
         },
         "test": {
@@ -121,5 +105,6 @@
         }
       }
     }
-  }
+  },
+  "defaultProject": "AngularAuth"
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
+import { Observable } from 'rxjs';
  
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
