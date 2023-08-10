@@ -34,6 +34,7 @@ export class RegisterComponent implements OnInit {
     this.password = '';
 
   }
+
   signInWithGoogle() {
     this.auth.googleSignIn();
   }
@@ -42,4 +43,5 @@ export class RegisterComponent implements OnInit {
 
     this.auth.signInWithMicrosoft();
   }
+
 }
