@@ -4,6 +4,8 @@ import { getAuth } from 'firebase/auth';
 
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
+import { ApiService } from '../../api.service';
+
 
 
 @Component({
@@ -16,8 +18,9 @@ export class HomeComponent implements OnInit {
 
   user_id: string;
   email: string;
+  quizzes;
 
-  constructor(private auth: AuthService,
+  constructor(private auth: AuthService, private apiService: ApiService
 
 
   ) { }
@@ -32,10 +35,20 @@ export class HomeComponent implements OnInit {
     this.email = auth.currentUser.email;
     this.user_id = auth.currentUser.uid;
 
+    this.getQuizzes();
 
   }
-
-
+  getQuizzes(): void {
+    this.apiService.get('quizzes').subscribe(
+      (data) => {
+        console.log(data);
+        this.quizzes = data;
+      },
+      (error) => {
+        console.error('Error fetching posts:', error);
+      }
+    );
+  }
 
   logout() {
     this.auth.logout();
