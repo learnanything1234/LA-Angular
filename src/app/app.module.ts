@@ -1,6 +1,8 @@
 
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { JwtModule } from '@auth0/angular-jwt';
+
 
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -26,6 +28,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { ButtonComponent } from './component/button/button.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,7 @@ import { ApiService } from './api.service';
     ForgotPasswordComponent,
     VarifyEmailComponent,
     HomeComponent,
+    ButtonComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +49,16 @@ import { ApiService } from './api.service';
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token');
+
+        },
+        allowedDomains: ['localhost'],
+        disallowedRoutes: ['localhost/auth/login']
+      }
+    })
   ],
 
   providers: [
