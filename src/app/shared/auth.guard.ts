@@ -25,7 +25,7 @@ export class AuthGuard implements CanActivate {
     return new Observable<boolean | UrlTree>(observer => {
       const unsubscribe = onAuthStateChanged(auth, (user) => {
         if (user) {
-          console.log("guard has user");
+          console.log(user);
           observer.next(true); // User is authenticated, allow access
         } else {
           observer.next(this.router.createUrlTree(['/login'])); // User is not authenticated, redirect to login
