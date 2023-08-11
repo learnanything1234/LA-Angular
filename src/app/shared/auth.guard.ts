@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
           console.log(user);
           observer.next(true); // User is authenticated, allow access
         } else {
-          observer.next(this.router.createUrlTree(['/login'])); // User is not authenticated, redirect to login
+          observer.next(this.router.createUrlTree(['/home'])); // User is not authenticated, redirect to login
         }
         observer.complete();
       });

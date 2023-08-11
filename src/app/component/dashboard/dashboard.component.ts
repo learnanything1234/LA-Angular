@@ -1,29 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html'
-})
-export class DashboardComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
-
-
-
-
-
-/*import { Component, OnInit } from '@angular/core';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 
 import { AuthService } from 'src/app/shared/auth.service';
 import { environment } from 'src/environments/environment';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -68,4 +48,3 @@ export class DashboardComponent implements OnInit {
 
 
 }
-*/

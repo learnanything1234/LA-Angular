@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
 
 
     const app = initializeApp(environment.firebaseConfig);
-
     const auth = getAuth(app);
     console.log(auth.currentUser)
     this.email = auth.currentUser.email;

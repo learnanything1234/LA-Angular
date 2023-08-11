@@ -28,7 +28,7 @@ export class AuthService {
       localStorage.setItem('token', 'true');
 
       if (res.user?.emailVerified == true) {
-        this.router.navigate(['dashboard']);
+        this.loggedInSuccessfully()
       } else {
         this.router.navigate(['/varify-email']);
       }
@@ -45,9 +45,8 @@ export class AuthService {
   register(email: string, password: string) {
 
     createUserWithEmailAndPassword(this.auth, email, password).then((res: any) => {
-      alert('Registration Successful');
+      alert('Registration Successful. Please check your inbox to confirm your email address.');
       this.sendEmailForVarification(res.user);
-
       this.router.navigate(['/login']);
     }, (err: { message: any; }) => {
       alert(err.message);
@@ -76,7 +75,6 @@ export class AuthService {
 
   // email varification
   sendEmailForVarification(user: any) {
-    console.log(user);
     sendEmailVerification(user).then((res: any) => {
       this.router.navigate(['/varify-email']);
     }, (err: any) => {
@@ -88,8 +86,6 @@ export class AuthService {
   googleSignIn() {
     return signInWithPopup(this.auth, new GoogleAuthProvider).then((res: any) => {
       this.loggedInSuccessfully();
-
-
     }, (err: { message: any; }) => {
       alert(err.message);
     })
@@ -101,8 +97,7 @@ export class AuthService {
     const microsoftProvider = new OAuthProvider('microsoft.com');
     signInWithPopup(this.auth, microsoftProvider).then((result) => {
       // Handle successful login
-      console.log(result);
-      this.router.navigate(['/dashboard']);
+      this.loggedInSuccessfully()
     }).catch((error) => {
       // Handle error
       console.error(error);
@@ -111,7 +106,7 @@ export class AuthService {
 
   private loggedInSuccessfully() {
 
-    this.router.navigate(['dashboard']);
+    this.router.navigate(['home']);
   }
 
 }

@@ -29,6 +29,8 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { ButtonComponent } from './component/button/button.component';
+import { SidebarComponent } from './component/sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,7 @@ import { ButtonComponent } from './component/button/button.component';
     VarifyEmailComponent,
     HomeComponent,
     ButtonComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
