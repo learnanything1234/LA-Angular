@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8000',
+  apiUrl: 'https://api.learnanything.uk', //http://127.0.0.1:8000
   firebaseConfig: {
     apiKey: "AIzaSyCPFd0X5PQO-h9ie5nK0icVJ6vc_kFTLvo",
     authDomain: "learnanything-187c4.firebaseapp.com",
