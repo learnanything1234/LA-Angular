@@ -35,6 +35,37 @@ export class HomeComponent implements OnInit {
     this.user_id = auth.currentUser.uid;
 
     this.getQuizzes();
+    const body = { name: 'POST Example' };
+    this.apiService.post('quizzes/52415', body).subscribe(
+      (data) => {
+        console.log(data);
+
+      },
+      (error) => {
+        console.error('Error posting posts:', error);
+      }
+    );
+
+
+    this.apiService.put('quizzes', body).subscribe(
+      (data) => {
+        console.log(data);
+
+      },
+      (error) => {
+        console.error('Error putting post:', error);
+      }
+    );
+
+    this.apiService.get('quizzes/52415').subscribe(
+      (data) => {
+        console.log(data);
+
+      },
+      (error) => {
+        console.error('Error fetching single post:', error);
+      }
+    );
 
   }
   getQuizzes(): void {
