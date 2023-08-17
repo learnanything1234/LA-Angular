@@ -35,8 +35,8 @@ export class HomeComponent implements OnInit {
     this.user_id = auth.currentUser.uid;
 
     this.getQuizzes();
-    const body = { name: 'POST Example' };
-    this.apiService.post('quizzes/52415', body).subscribe(
+    const body = [{"id":524125,"questions":"[1, 2, 3]","name":"Maths","users":"1"}]
+    this.apiService.put('quizzes/1', body).subscribe(
       (data) => {
         console.log(data);
 
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     );
 
 
-    this.apiService.put('quizzes', body).subscribe(
+    this.apiService.post('quizzes', body).subscribe(
       (data) => {
         console.log(data);
 
@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
       }
     );
 
-    this.apiService.get('quizzes/52415').subscribe(
+    this.apiService.get('quizzes/1').subscribe(
       (data) => {
         console.log(data);
 
