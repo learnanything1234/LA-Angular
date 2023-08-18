@@ -35,6 +35,7 @@ export class ApiService {
   }
 
   put<T>(resource: string, data: any): Observable<T> {
+    console.log("data+++++",data)
     const headers = this.createHeaders();
     return this.http.put<T>(`${this.baseUrl}/${resource}`, data, { headers });
   }
